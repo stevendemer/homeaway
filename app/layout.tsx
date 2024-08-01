@@ -18,6 +18,9 @@ const fontBody = Lato({
 export const metadata: Metadata = {
   title: "Homeaway",
   description: "Feel at home, away from home",
+  icons: {
+    icon: "/assets/red_tent.png",
+  },
 };
 
 export default function RootLayout({
