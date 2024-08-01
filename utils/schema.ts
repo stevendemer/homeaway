@@ -57,7 +57,7 @@ export const propertySchema = z.object({
 });
 
 function validateFile() {
-  const maxUploadSize = 1024 * 1024;
+  const maxUploadSize = 1024 * 10000;
   const acceptedFileTypes = ["image/"];
   return z
     .instanceof(File)
