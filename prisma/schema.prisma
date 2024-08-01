@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Profile {
+  id           String     @id @default(uuid())
+  clerkId      String     @unique
+  firstName    String
+  lastName     String
+  username     String
+  email        String     @unique
+  profileImage String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  // one user can create multiple properties
+  properties   Property[]
+  favorites    Favorite[]
+
+  @@index([email])
+  @@map("profiles")
+}
+
+model Property {
+  id          String   @id @default(uuid())
+  name        String
+  tagline     String
+  category    String
+  image       String
+  country     String
+  description String
+  price       Int
+  guests      Int
+  beds        Int
+  bedrooms    Int
+  amenities   String
+  baths       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  profile   Profile?   @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
+  profileId String?
+  favorites Favorite[]
+
+  @@index([name])
+  @@map("properties")
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile   Profile @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
+  profileId String
+
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String
+
+  @@index([profileId, propertyId])
+  @@map("favorites")
+}
