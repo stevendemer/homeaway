@@ -1,11 +1,10 @@
-import { fetchPropertiesDetails } from "@/utils/actions";
+import { fetchPropertiesDetails, findExistingReviews } from "@/utils/actions";
 import { redirect } from "next/navigation";
 import Breadcumbs from "@/components/properties/Breadcumbs";
 import FavoriteToggleButton from "@/components/card/FavoriteToggleButton";
 import ShareButton from "@/components/properties/ShareButton";
 import ImageContainer from "@/components/properties/ImageContainer";
 import PropertyRating from "@/components/card/PropertyRating";
-import BookingCalendar from "@/components/properties/BookingCalendar";
 import PropertyDetails from "@/components/properties/PropertyDetails";
 import Description from "@/components/properties/Description";
 import Amenities from "@/components/properties/Amenitites";
@@ -13,12 +12,23 @@ import UserInfo from "@/components/properties/UserInfo";
 import { Separator } from "@/components/ui/separator";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
+import SubmitReview from "@/components/reviews/SubmitReview";
+import PropertyReviews from "@/components/reviews/PropertyReviews";
+import { auth } from "@clerk/nextjs/server";
 
 const DynamicMap = dynamic(
   () => import("@/components/properties/PropertyMap"),
   {
     ssr: false,
     loading: () => <Skeleton className="h-[400px] w-full" />,
+  }
+);
+
+const DynamicBooking = dynamic(
+  () => import("@/components/booking/BookingWrapper"),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-[200px] w-full" />,
   }
 );
 
@@ -33,6 +43,14 @@ const PropertyDetail = async ({ params }: { params: { id: string } }) => {
   const details = { amenities, baths, beds, bedrooms, guests };
   const firstName = property.profile!.firstName;
   const profileImage = property.profile!.profileImage;
+
+  const { userId } = auth();
+
+  const isNotOwner = property.profile?.clerkId !== userId;
+  const reviewDoesNotExist =
+    userId && isNotOwner && !(await findExistingReviews(userId, property.id));
+
+  console.log(property.bookings);
 
   return (
     <section>
@@ -59,10 +77,15 @@ const PropertyDetail = async ({ params }: { params: { id: string } }) => {
           <DynamicMap countryCode={property.country} />
         </div>
         <div className="lg:col-span-4 flex flex-col items-center">
-          {/* Calendar */}
-          <BookingCalendar />
+          <DynamicBooking
+            propertyId={property.id}
+            price={property.price}
+            bookings={property.bookings}
+          />
         </div>
       </section>
+      {reviewDoesNotExist && <SubmitReview propertyId={property.id} />}
+      <PropertyReviews propertyId={property.id} />
     </section>
   );
 };

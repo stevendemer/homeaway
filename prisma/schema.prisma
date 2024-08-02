@@ -27,6 +27,8 @@ model Profile {
   // one user can create multiple properties
   properties   Property[]
   favorites    Favorite[]
+  reviews      Review[]
+  bookings     Booking[]
 
   @@index([email])
   @@map("profiles")
@@ -48,10 +50,12 @@ model Property {
   baths       Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  reviews     Review[]
 
   profile   Profile?   @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
   profileId String?
   favorites Favorite[]
+  bookings  Booking[]
 
   @@index([name])
   @@map("properties")
@@ -70,4 +74,40 @@ model Favorite {
 
   @@index([profileId, propertyId])
   @@map("favorites")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  property   Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String?
+  profile    Profile?  @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
+  profileId  String?
+  rating     Int
+  comment    String
+
+  @@index([propertyId, profileId])
+  @@map("reviews")
+}
+
+model Booking {
+  id        String   @id @default(uuid())
+  profile   Profile? @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
+  profileId String?
+
+  property   Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String?
+
+  orderTotal    Int
+  totalNights   Int
+  checkIn       DateTime
+  checkOut      DateTime
+  paymentStatus Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([propertyId, profileId])
+  @@map("bookings")
 }

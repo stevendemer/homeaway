@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { TfiReload } from "react-icons/tfi";
 import { SignInButton } from "@clerk/nextjs";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { LuTrash2, LuPenSquare } from "react-icons/lu";
 
 type Props = {
   className?: string;
@@ -66,6 +67,34 @@ export const CardSubmitButton = ({ isFavorite }: { isFavorite: boolean }) => {
       ) : (
         <FaRegHeart />
       )}
+    </Button>
+  );
+};
+
+type ActionType = "edit" | "delete";
+export const IconButton = ({ actionType }: { actionType: ActionType }) => {
+  const { pending } = useFormStatus();
+
+  const renderIcon = () => {
+    switch (actionType) {
+      case "delete":
+        return <LuTrash2 />;
+      case "edit":
+        return <LuPenSquare />;
+      default:
+        const never: never = actionType;
+        throw new Error(`Invalid action type: ${never}`);
+    }
+  };
+
+  return (
+    <Button
+      type="submit"
+      size="icon"
+      variant="link"
+      className="p-2 cursor-pointer"
+    >
+      {pending ? <TfiReload className="animate-spin" /> : renderIcon()}
     </Button>
   );
 };
