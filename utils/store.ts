@@ -9,7 +9,7 @@ type PropertyState = {
   range: DateRange | undefined;
 };
 
-// create the store
+// store property details when the user is deciding on a booking
 export const useProperty = create<PropertyState>(() => {
   return {
     propertyId: "",

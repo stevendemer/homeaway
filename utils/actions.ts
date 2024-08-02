@@ -545,9 +545,33 @@ export async function deleteBookingAction(prevState: { bookingId: string }) {
       },
     });
 
-    revalidatePath("/bookings");
+    revalidatePath("/bookings", "page");
     return { message: "Booking deleted successfully" };
   } catch (error) {
     return renderError(error);
   }
 }
+
+export const fetchBookings = async () => {
+  const user = await getAuthUser();
+
+  const bookings = await db.booking.findMany({
+    where: {
+      profileId: user.id,
+    },
+    include: {
+      property: {
+        select: {
+          id: true,
+          name: true,
+          country: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return bookings;
+};

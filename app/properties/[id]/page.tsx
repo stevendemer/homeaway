@@ -15,6 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import SubmitReview from "@/components/reviews/SubmitReview";
 import PropertyReviews from "@/components/reviews/PropertyReviews";
 import { auth } from "@clerk/nextjs/server";
+import { useProperty } from "@/utils/store";
 
 const DynamicMap = dynamic(
   () => import("@/components/properties/PropertyMap"),
