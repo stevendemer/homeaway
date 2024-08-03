@@ -6,6 +6,7 @@ import Providers from "@/components/providers";
 import Navbar from "@/components/navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
+import { Analytics } from "@vercel/analytics/react";
 
 const fontHeading = Inter({ subsets: ["latin"], variable: "--font-heading" });
 
@@ -51,6 +52,7 @@ export default function RootLayout({
             <main className="container py-10 flex-1">{children}</main>
             <Toaster />
           </Providers>
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
