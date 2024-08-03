@@ -18,7 +18,7 @@ const BookingWrapper = ({
   bookings,
 }: BookingWrapperProps) => {
   useEffect(() => {
-    // set client state
+    // set client state when the component renders
     useProperty.setState({
       propertyId,
       price,

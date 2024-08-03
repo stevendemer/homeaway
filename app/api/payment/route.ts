@@ -38,7 +38,16 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     checkIn,
     checkOut,
     property: { image, name },
-  } = booking;
+  } = booking as {
+    totalNights: number;
+    orderTotal: number;
+    checkIn: Date;
+    checkOut: Date;
+    property: {
+      image: string;
+      name: string;
+    };
+  };
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -55,12 +64,9 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
             product_data: {
               name: `${name}`,
               images: [image],
-              description:
-                "Stay in this wonderful place, from " +
-                formatDate(checkIn) +
-                " to " +
-                formatDate(checkOut) +
-                " . Enjoy your stay.",
+              description: `Stay in this wonderful place for ${totalNights}, from ${formatDate(
+                checkIn
+              )} to ${formatDate(checkOut)}. Enjoy your stay.`,
             },
           },
         },

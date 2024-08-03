@@ -464,6 +464,7 @@ export const createBooking = async (prevState: {
 }) => {
   const user = await getAuthUser();
 
+  // remove any bookings that weren't paid for
   await db.booking.deleteMany({
     where: {
       profileId: user.id,
@@ -567,6 +568,7 @@ export const fetchBookings = async () => {
   const bookings = await db.booking.findMany({
     where: {
       profileId: user.id,
+      paymentStatus: true,
     },
     include: {
       property: {
@@ -604,6 +606,7 @@ export const fetchRentals = async () => {
       const totalNightsSum = await db.booking.aggregate({
         where: {
           propertyId: item.id,
+          paymentStatus: true,
         },
         _sum: {
           totalNights: true,
@@ -612,6 +615,7 @@ export const fetchRentals = async () => {
       const orderTotal = await db.booking.aggregate({
         where: {
           propertyId: item.id,
+          paymentStatus: true,
         },
         _sum: {
           orderTotal: true,

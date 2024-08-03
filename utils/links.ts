@@ -32,4 +32,8 @@ export const links: NavLinks[] = [
     href: "/profile",
     label: "Profile",
   },
+  {
+    href: "/admin",
+    label: "Admin",
+  },
 ];
