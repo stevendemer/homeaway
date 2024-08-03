@@ -6,7 +6,7 @@ A beautiful and modern rental application for feeling right at home. Made with N
 
 ## Tech Stack
 
-**Server**: NextJS, Prisma, Supabase, Zod
+**Server**: NextJS, Prisma, Supabase, Zod, Stripe
 
 **Authentication**: Clerk
 
