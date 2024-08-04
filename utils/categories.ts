@@ -5,6 +5,7 @@ import { TbCaravan, TbTent, TbBuildingCottage } from "react-icons/tb";
 
 import { GiWoodCabin, GiMushroomHouse } from "react-icons/gi";
 import { PiWarehouse, PiLighthouse, PiVan } from "react-icons/pi";
+import { TbSpeedboat } from "react-icons/tb";
 
 import { GoContainer } from "react-icons/go";
 
@@ -21,9 +22,9 @@ export type CategoryLabel =
   | "container"
   | "caravan"
   | "tiny"
-  | "magic"
   | "warehouse"
-  | "lodge";
+  | "lodge"
+  | "boat";
 
 export const categories: Category[] = [
   {
@@ -47,10 +48,6 @@ export const categories: Category[] = [
     icon: TbBuildingCottage,
   },
   {
-    label: "magic",
-    icon: GiMushroomHouse,
-  },
-  {
     label: "container",
     icon: GoContainer,
   },
@@ -66,5 +63,9 @@ export const categories: Category[] = [
   {
     label: "lodge",
     icon: GiWoodCabin,
+  },
+  {
+    label: "boat",
+    icon: TbSpeedboat,
   },
 ];

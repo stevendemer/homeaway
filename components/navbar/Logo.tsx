@@ -4,9 +4,12 @@ import Link from "next/link";
 
 const Logo = () => {
   return (
-    <Button size="icon" asChild>
-      <Link href="/">
+    <Button size="sm" asChild>
+      <Link className="flex items-center" href="/">
         <LuTent className="w-6 h-6" />
+        <h1 className="sm:text-xl text-md leading-loose font-semibold p-2">
+          Home Away
+        </h1>
       </Link>
     </Button>
   );
