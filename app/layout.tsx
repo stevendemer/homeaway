@@ -8,8 +8,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
 
-const fontHeading = Inter({ subsets: ["latin"], variable: "--font-heading" });
-
 const fontBody = Lato({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -35,13 +33,7 @@ export default function RootLayout({
         <head>
           <meta charSet="utf-8" />
         </head>
-        <body
-          className={cn(
-            "min-h-screen flex-1",
-            fontBody.className,
-            fontHeading.className
-          )}
-        >
+        <body className={cn("min-h-screen flex-1", fontBody.className)}>
           <Providers
             attribute="class"
             defaultTheme="dark"
