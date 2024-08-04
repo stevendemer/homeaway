@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const fontBody = Lato({
   subsets: ["latin"],
@@ -45,6 +46,7 @@ export default function RootLayout({
             <Toaster />
           </Providers>
           <Analytics />
+          <SpeedInsights />
         </body>
       </html>
     </ClerkProvider>
